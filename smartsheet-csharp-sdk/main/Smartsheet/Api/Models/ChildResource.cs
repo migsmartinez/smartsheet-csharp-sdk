@@ -17,6 +17,7 @@
 //    %[license]
 
 using System;
+using Smartsheet.Api.Internal.Util;
 
 namespace Smartsheet.Api.Models
 {
@@ -76,7 +77,7 @@ namespace Smartsheet.Api.Models
         /// Converts a ChildResource to the appropriate specific type based on resourceType
         /// </summary>
         /// <param name="childResource">The ChildResource to convert</param>
-        /// <returns>The converted object (Sheet, Report, Sight, or Folder)</returns>
+        /// <returns>The converted object (Sheet, Report, Sight, Folder, or Template)</returns>
         public static object ConvertToSpecificType(ChildResource childResource)
         {
             if (childResource == null)
@@ -92,6 +93,8 @@ namespace Smartsheet.Api.Models
                     return ConvertToSight(childResource);
                 case "folder":
                     return ConvertToFolder(childResource);
+                case "template":
+                    return ConvertToTemplate(childResource);
                 default:
                     throw new InvalidOperationException($"Unknown resourceType: {childResource.ResourceType}");
             }
@@ -108,8 +111,8 @@ namespace Smartsheet.Api.Models
                 Name = childResource.Name,
                 AccessLevel = childResource.AccessLevel,
                 Permalink = childResource.Permalink,
-                CreatedAt = childResource.CreatedAt as DateTime?,
-                ModifiedAt = childResource.ModifiedAt as DateTime?,
+                CreatedAt = DateTimeConverter.ConvertToDateTime(childResource.CreatedAt),
+                ModifiedAt = DateTimeConverter.ConvertToDateTime(childResource.ModifiedAt),
                 Source = childResource.Source,
                 OwnerId = childResource.OwnerId,
                 Owner = childResource.Owner
@@ -127,8 +130,8 @@ namespace Smartsheet.Api.Models
                 Name = childResource.Name,
                 AccessLevel = childResource.AccessLevel,
                 Permalink = childResource.Permalink,
-                CreatedAt = childResource.CreatedAt as DateTime?,
-                ModifiedAt = childResource.ModifiedAt as DateTime?,
+                CreatedAt = DateTimeConverter.ConvertToDateTime(childResource.CreatedAt),
+                ModifiedAt = DateTimeConverter.ConvertToDateTime(childResource.ModifiedAt),
                 Source = childResource.Source
             };
         }
@@ -144,8 +147,8 @@ namespace Smartsheet.Api.Models
                 Name = childResource.Name,
                 AccessLevel = childResource.AccessLevel,
                 Permalink = childResource.Permalink,
-                CreatedAt = childResource.CreatedAt as DateTime?,
-                ModifiedAt = childResource.ModifiedAt as DateTime?,
+                CreatedAt = DateTimeConverter.ConvertToDateTime(childResource.CreatedAt),
+                ModifiedAt = DateTimeConverter.ConvertToDateTime(childResource.ModifiedAt),
                 Source = childResource.Source
             };
         }
@@ -163,6 +166,19 @@ namespace Smartsheet.Api.Models
                 CreatedAt = childResource.CreatedAt,
                 ModifiedAt = childResource.ModifiedAt,
                 Source = childResource.Source
+            };
+        }
+
+        /// <summary>
+        /// Converts a ChildResource to a Template
+        /// </summary>
+        private static Template ConvertToTemplate(ChildResource childResource)
+        {
+            return new Template
+            {
+                Id = childResource.Id,
+                Name = childResource.Name,
+                AccessLevel = childResource.AccessLevel
             };
         }
     }

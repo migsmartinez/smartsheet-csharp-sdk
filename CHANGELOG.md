@@ -4,24 +4,65 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ## [X.X.X] - Unreleased
+
+## [6.6.5] - 2026-02-04
+### Fixed
+- Fix retry logic. Previously the SDK's retry logic was hindered by a generic error check and as a result the code could never reach the retry part.
+- Fix user agent for default HTTP client.
+
+## [6.6.4] - 2026-01-19
+### Fixed
+- Revert the default float parsing handler to double - [#157](https://github.com/smartsheet/smartsheet-csharp-sdk/pull/157)
+
+## [6.6.3] - 2025-12-23
+### Added
+- Added `SetEnableDecimalObjectValue` method to `SmartsheetBuilder` to enable opt-in support for `DecimalObjectValue` when deserializing numeric cell values, preserving full decimal precision instead of converting to `double`. See [ADVANCED.md](ADVANCED.md#preserving-decimal-precision-with-decimalobjectvalue) for usage details and important considerations.
+
+### Fixed
+- Reverted [#134](https://github.com/smartsheet/smartsheet-csharp-sdk/pull/134) because it introduced breaking changes. The addition above adds support for decimal conversion with an opt-in flag.
+
+## [6.6.2] - 2025-12-12
+### Fixed
+- Fixed "Unknown resourceType" exception when template resources are returned in folder/workspace children endpoints by adding template support to `ChildResource.ConvertToSpecificType()` method
+- Added `TEMPLATES` enum value to `ChildrenResourceType` for consistency with supported child resource types
+
+## [6.6.1] - 2025-12-10
+### Fixed
+- Fix `DateTime` conversions in the ChildResource class
+
+## [6.6.0] - 2025-12-04
+### Added
+- Support for POST /2.0/users/{userId}/reactivate endpoint
+- Support for POST /2.0/users/{userId}/deactivate endpoint
+### Updated
+- Update csproj file for backwards compatibility
+
+### Fixed
+- Serialization of float numbers to double caused precision loss. Switched to decimal.
+- Renamed `IncludeColumnIds` to `IncludedColumnIds` in [`AutomationAction`](smartsheet-csharp-sdk/main/Smartsheet/Api/Models/AutomationAction.cs) class to match Smartsheet API specification and align with Python and Java SDK implementations. Fixes [issue #32](https://github.com/smartsheet/smartsheet-csharp-sdk/issues/32).
+
+## [6.5.0] - 2025-11-25
 ### Added
 - WireMock integration tests for contract testing for GET /2.0/users/{userId}/plans and GET /2.0/users endpoints
 - WireMock integration tests for contract testing for POST /2.0/users/{userId}/plans/{planId}/upgrade and POST /2.0/users/{userId}/plans/{planId}/downgrade
 - WireMock integration tests for contract testing for DELETE /2.0/users/{userId}/plans/{planId} endpoint
-- Remove integration tests from the sdk test suite and workflows
 - Added new `AssetShare` class
+- Added new asset-based sharing endpoints through `SharingResources` interface
+- Added `AssetType` enum to support multiple asset types (sheets, reports, sights, workspaces)
+- Added methods for listing, getting, creating, updating, and deleting shares for any asset type
 
 ### Updated
 - Folder structure for the Users related WireMock tests
 - Replaced `Share` in `AssetSharingResources` classes with `AssetShare`
 
-## [6.5.0] - 2025-10-27
-### Added
-- Added new asset-based sharing endpoints through `SharingResources` interface
-- Added `AssetType` enum to support multiple asset types (sheets, reports, sights, workspaces)
-- Added methods for listing, getting, creating, updating, and deleting shares for any asset type
 ### Changed
 - Deprecated old asset-specific sharing methods in `ShareResources` with notices to use the new asset-based methods
+
+### Removed
+- Remove integration tests from the sdk test suite and workflows
+
+### Fixed
+- Fix [issue #128](https://github.com/smartsheet/smartsheet-csharp-sdk/issues/128) - in the implementation of the DefaultHttpClient class that recreates the httpClient (RestClient) instance on every request
 
 ## [6.4.0] - 2025-10-27
 ### Added

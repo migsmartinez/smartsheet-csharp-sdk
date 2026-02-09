@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net8.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
+    <LangVersion>8.0</LangVersion>
     <Nullable>annotations</Nullable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -18,7 +19,7 @@
     <Authors>Smartsheet</Authors>
     <Product>smartsheet-csharp-sdk</Product>
     <PackageTags>Smartsheet Collaboration Project Management Excel spreadsheet</PackageTags>
-    <Version>6.4.0</Version>
+    <Version>6.6.5</Version>
     <AssemblyName>smartsheet-csharp-sdk</AssemblyName>
     <RootNamespace>smartsheet-csharp-sdk</RootNamespace>
     <Configuration>Debug</Configuration>
@@ -75,9 +76,5 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NLog" Version="5.0.5" />
     <PackageReference Include="RestSharp" Version="109.0.0" />
-    <PackageReference Include="System.Management" Version="7.0.0" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' ">
-    <Reference Include="System.Management" />
   </ItemGroup>
 </Project>
